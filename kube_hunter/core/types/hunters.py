@@ -6,10 +6,10 @@ class HunterBase:
         """returns tuple of (name, docs)"""
         if not docs:
             return __name__, "<no documentation>"
-        docs = docs.strip().split("\n")
-        for i, line in enumerate(docs):
-            docs[i] = line.strip()
-        return docs[0], " ".join(docs[1:]) if len(docs[1:]) else "<no documentation>"
+        docs = docs.strip().split("\n", 1)
+        name = docs[0].strip()
+        documentation = docs[1].strip().replace("\n", " ") if len(docs) > 1 else "<no documentation>"
+        return name, documentation
 
     @classmethod
     def get_name(cls):
@@ -22,6 +22,21 @@ class HunterBase:
         from ..events.event_handler import handler  # noqa
 
         handler.publish_event(event, caller=self)
+
+    @staticmethod
+    def parse_docs(docs):
+        """returns tuple of (name, docs)"""
+        if not docs:
+            return __name__, "<no documentation>"
+        docs = docs.strip().split("\n", 1)
+        name = docs[0].strip()
+        documentation = docs[1].strip().replace("\n", " ") if len(docs) > 1 else "<no documentation>"
+        return name, documentation
+
+    @classmethod
+    def get_name(cls):
+        name, _ = cls.parse_docs(cls.__doc__)
+        return name
 
 
 class ActiveHunter(HunterBase):
