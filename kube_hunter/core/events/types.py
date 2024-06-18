@@ -223,13 +223,8 @@ class OpenPortEvent(Event):
     def __str__(self):
         return str(self.port)
 
-    # Event's logical location to be used mainly for reports.
     def location(self):
-        if self.host:
-            location = str(self.host) + ":" + str(self.port)
-        else:
-            location = str(self.port)
-        return location
+        return f"{self.host}:{self.port}" if self.host else str(self.port)
 
 
 class HuntFinished(Event):
