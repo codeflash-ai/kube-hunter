@@ -159,8 +159,7 @@ class Vulnerability:
         return self.vid
 
     def get_category(self):
-        if self.category:
-            return self.category.name
+        return self.category.name if self.category else None
 
     def get_name(self):
         return self.name
